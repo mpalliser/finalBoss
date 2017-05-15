@@ -2,6 +2,7 @@ package org.foobarspam.cotxox.domain;
 
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,19 +24,21 @@ public class Conductor {
 	
 	@NotEmpty
 	private String modelo;
-	
-	@NotNull
+
 	private double mediaValoraciones;
 	
 	private boolean ocupado = false;
-	
+
+	//lo pide JPA
+	public Conductor() {
+	}
+
 	public Conductor(String nombre, String matricula, String modelo) {
-		super();
 		this.nombre = nombre;
 		this.matricula = matricula;
 		this.modelo = modelo;
 	}
-	
+
 	public String getNombre() {
 		return nombre;
 	}
@@ -63,11 +66,7 @@ public class Conductor {
 	public double getMediaValoraciones() {
 		return mediaValoraciones;
 	}
-	
-	public void setMediaValoraciones(double mediaValoraciones) {
-		this.mediaValoraciones = mediaValoraciones;
-	}
-	
+
 	public boolean isOcupado() {
 		return ocupado;
 	}
@@ -75,5 +74,8 @@ public class Conductor {
 	public void setOcupado(boolean ocupado) {
 		this.ocupado = ocupado;
 	}
-	
+
+	public Integer getId() {
+		return id;
+	}
 }

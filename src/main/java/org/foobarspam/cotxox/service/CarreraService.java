@@ -1,12 +1,16 @@
 package org.foobarspam.cotxox.service;
 
 import org.foobarspam.cotxox.domain.Conductor;
+import org.foobarspam.cotxox.repository.ConductorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 public class CarreraService {
-	
+
+	private ConductorRepository poolConductores;
 	private String origen;
 	private String destino;
 	private double distancia;
@@ -19,7 +23,12 @@ public class CarreraService {
 	
 	public CarreraService() {
 	}
-	
+
+	@Autowired
+	public void setPoolConductores(ConductorRepository poolConductores) {
+		this.poolConductores = poolConductores;
+	}
+
 	public String getOrigen() {
 		return origen;
 	}
@@ -100,7 +109,37 @@ public class CarreraService {
 		return tarifa.getCosteTotalEsperado();
 	}
 
+	public Conductor asignarConductor() {
+		Conductor conductorAsignado = null;
+		boolean asignado = false;
+		int posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()-1);
+		if (hayConductoresLibres() == false) {
+			System.out.println("En este momento no queda ningún conductor disponible. Disculpe las molestias ");
+			return conductorAsignado;
+		}
+		while (asignado == false) {
+			if (conductorIsOcupado(posicionConsulta) == false) {
+				conductorAsignado = poolConductores.findOne(posicionConsulta);
+				asignado = true;
+				conductorAsignado.setOcupado(true);
+			}
+			posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()-1);
+		}
+		return conductorAsignado;
+	}
 
+	private boolean hayConductoresLibres() {
+		for (Conductor conductor : poolConductores.findAll()) {
+			if (conductor.isOcupado() == false) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean conductorIsOcupado(int conductor) {
+		return poolConductores.findOne(conductor).isOcupado();
+	}
 	
 	
 	
