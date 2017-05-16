@@ -1,14 +1,13 @@
 package org.foobarspam.cotxox.domain;
 
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Conductor {
@@ -24,10 +23,13 @@ public class Conductor {
 	
 	@NotEmpty
 	private String modelo;
-
-	private double mediaValoraciones;
 	
 	private boolean ocupado = false;
+
+	private double valoracionMedia;
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<Double> valoraciones= new ArrayList<>();
 
 	//lo pide JPA
 	public Conductor() {
@@ -62,10 +64,6 @@ public class Conductor {
 	public void setModelo(String modelo) {
 		this.modelo = modelo;
 	}
-	
-	public double getMediaValoraciones() {
-		return mediaValoraciones;
-	}
 
 	public boolean isOcupado() {
 		return ocupado;
@@ -77,5 +75,27 @@ public class Conductor {
 
 	public Integer getId() {
 		return id;
+	}
+
+	public double getValoracionMedia() {
+
+		double valoracion = 0;
+		for (int i = 0; i < valoraciones.size(); i++) {
+			valoracion += valoraciones.get(i);
+		}
+		return valoracion / valoraciones.size();
+
+	}
+
+	public void setValoracionMedia(double valoracionMedia) {
+		this.valoracionMedia = valoracionMedia;
+	}
+
+	public List<Double> getValoraciones() {
+		return valoraciones;
+	}
+
+	public void setValoracion(double valoracion) {
+		this.valoraciones.add(valoracion);
 	}
 }

@@ -60,7 +60,7 @@ public class DemoApplicationTests {
 
 		assertEquals(3,poolConductores.count());
 		assertEquals("Samantha", poolConductores.findOne(1).getNombre());
-		//assertEquals(4.00, poolConductores.findOne(1).getMediaValoraciones(), 0);
+		//assertEquals(4.00, poolConductores.findOne(1).getmediaValoraciones(), 0);
 
 	}
 
@@ -68,8 +68,16 @@ public class DemoApplicationTests {
 	public void testAsignarConductor() {
 
 		assertTrue(poolConductores.exists(carrera.asignarConductor().getId()));
-		assertEquals(poolConductores.findOne(1).getMatricula(), carrera.asignarConductor().getMatricula());
-		assertEquals(poolConductores.findOne(1).getModelo(), carrera.asignarConductor().getModelo());
+		//assertEquals("Mola", carrera.asignarConductor().getNombre());
+
+	}
+
+	@Test
+	public void testValoracionMedia() {
+
+		assertEquals(4.50, poolConductores.findOne(1).getValoracionMedia(), 0);
+		assertEquals(4.00, poolConductores.findOne(2).getValoracionMedia(), 0);
+		assertEquals(2.50, poolConductores.findOne(3).getValoracionMedia(), 0);
 
 	}
 }

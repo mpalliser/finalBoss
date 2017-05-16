@@ -11,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CarreraService {
 
 	private ConductorRepository poolConductores;
+
 	private String origen;
 	private String destino;
 	private double distancia;
@@ -112,7 +113,7 @@ public class CarreraService {
 	public Conductor asignarConductor() {
 		Conductor conductorAsignado = null;
 		boolean asignado = false;
-		int posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()-1);
+		int posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()+1);
 		if (hayConductoresLibres() == false) {
 			System.out.println("En este momento no queda ningún conductor disponible. Disculpe las molestias ");
 			return conductorAsignado;
@@ -123,7 +124,7 @@ public class CarreraService {
 				asignado = true;
 				conductorAsignado.setOcupado(true);
 			}
-			posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()-1);
+			posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()+1);
 		}
 		return conductorAsignado;
 	}

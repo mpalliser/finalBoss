@@ -23,9 +23,23 @@ public class DataLoader {
     @PostConstruct
     private void loadData() {
         poolConductores.deleteAll();
-        poolConductores.save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
-        poolConductores.save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
-        poolConductores.save(new Conductor("Mola", "7JKK555", "Mercedes A"));
+
+        Conductor cd = new Conductor("Samantha", "4ABC123", "Chevy Malibu");
+        cd.setValoracion(4);
+		cd.setValoracion(4);
+		cd.setValoracion(5);
+		cd.setValoracion(5);
+		poolConductores.save(cd);
+        cd = new Conductor("Fox", "SDHJ44", "Toyota Prius");
+        cd.setValoracion(4);
+        poolConductores.save(cd);
+        cd = new Conductor("Mola", "7JKK555", "Mercedes A");
+		cd.setValoracion(5);
+		cd.setValoracion(0);
+		cd.setValoracion(5);
+		cd.setValoracion(0);
+        poolConductores.save(cd);
+
 
     }
 }
