@@ -16,6 +16,20 @@
     </style>
 </head>
 <body>
+<<<<<<< HEAD
 
+=======
+<div id="map"></div>
+<script th:inline="javascript">
+    var map;
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 39.570, lng: 2.668},
+            zoom: 5
+        });
+    }
+</script>
+<script th:inline="javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUwaezKJPNjtM72ZiBHXGW_VsQVTqxCUg&callback=initMap"></script>
+>>>>>>> 85699c0a1acb077e73997852a7b99dd04d7baa45
 </body>
 </html>
