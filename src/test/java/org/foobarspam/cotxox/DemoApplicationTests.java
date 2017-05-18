@@ -3,7 +3,7 @@ package org.foobarspam.cotxox;
 import static org.junit.Assert.*;
 
 import org.foobarspam.cotxox.domain.Conductor;
-import org.foobarspam.cotxox.repository.ConductorRepository;
+import org.foobarspam.cotxox.domain.Valoracion;
 import org.foobarspam.cotxox.service.CarreraService;
 import org.foobarspam.cotxox.service.TarifaService;
 import org.junit.Before;
@@ -21,21 +21,33 @@ public class DemoApplicationTests {
 	CarreraService carrera;
 	@Autowired
 	TarifaService tarifa;
-	@Autowired
-	ConductorRepository poolConductores;
 
 	@Before
 	public void setUp(){
 
+		// fijamos los parametros de tarifa
 		tarifa.setDistancia(7.75);
 		tarifa.setMinutos(10);
 
+		//fijamos los parametros de carrera
 		carrera.setTarjetaCredito("4916119711304546");
 		carrera.setOrigen("Aeroport Son Sant Joan");
 		carrera.setDestino("Magaluf");
 		carrera.setDistancia(7.75);
 		carrera.setTiempoEsperadoMinutos(10);
 
+		//Creamos 3 conductores con diferentes valoraciones para testear
+		Conductor cd = new Conductor("Samantha", "4ABC123", "Chevy Malibu");
+		carrera.getConductores().save(cd);
+		carrera.getValoraciones().save(new Valoracion(4,cd));
+
+		cd = new Conductor("Fox", "SDHJ44", "Toyota Prius");
+		carrera.getConductores().save(cd);
+		carrera.getValoraciones().save(new Valoracion(4,cd));
+
+		cd = new Conductor("Mola", "7JKK555", "Mercedes A");
+		carrera.getConductores().save(cd);
+		carrera.getValoraciones().save(new Valoracion(4,cd));
 
 	}
 	@Test
@@ -53,13 +65,15 @@ public class DemoApplicationTests {
 
 		//See your Cost
 		assertEquals(13.9625, carrera.getCosteEsperado(), 0);
+		assertEquals("",carrera.nm());
 	}
 
 	@Test
 	public void testPool() {
 
-		assertEquals(3,poolConductores.count());
-		assertEquals("Samantha", poolConductores.findOne(1).getNombre());
+		assertEquals("Samantha", carrera.getConductores().findOne(1).getNombre());
+		//Crea 6 conductores por los loles
+		assertEquals(3,carrera.getConductores().count());
 		//assertEquals(4.00, poolConductores.findOne(1).getmediaValoraciones(), 0);
 
 	}
@@ -67,17 +81,15 @@ public class DemoApplicationTests {
 	@Test
 	public void testAsignarConductor() {
 
-		assertTrue(poolConductores.exists(carrera.asignarConductor().getId()));
+		assertTrue(carrera.getConductores().exists(carrera.asignarConductor().getId()));
 		//assertEquals("Mola", carrera.asignarConductor().getNombre());
 
 	}
 
 	@Test
-	public void testValoracionMedia() {
-
-		assertEquals(4.50, poolConductores.findOne(1).getValoracionMedia(), 0);
-		assertEquals(4.00, poolConductores.findOne(2).getValoracionMedia(), 0);
-		assertEquals(2.50, poolConductores.findOne(3).getValoracionMedia(), 0);
+	public void testValoraciones() {
+		assertEquals(3, carrera.getValoraciones().count());
+		//assertEquals(4.50, carrera.valoracionMedia(), 0);
 
 	}
 }

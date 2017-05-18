@@ -1,7 +1,10 @@
 package org.foobarspam.cotxox.service;
 
+import javafx.scene.canvas.GraphicsContext;
 import org.foobarspam.cotxox.domain.Conductor;
+import org.foobarspam.cotxox.domain.Valoracion;
 import org.foobarspam.cotxox.repository.ConductorRepository;
+import org.foobarspam.cotxox.repository.ValoracionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +14,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class CarreraService {
 
 	private ConductorRepository poolConductores;
+	private ValoracionRepository valoraciones;
 
 	private String origen;
 	private String destino;
@@ -21,13 +25,15 @@ public class CarreraService {
 	private Conductor conductor;
 	private double costeTotal;
 	private int totalPropinas;
+
 	
 	public CarreraService() {
 	}
 
 	@Autowired
-	public void setPoolConductores(ConductorRepository poolConductores) {
+	public CarreraService(ConductorRepository poolConductores, ValoracionRepository valoraciones) {
 		this.poolConductores = poolConductores;
+		this.valoraciones = valoraciones;
 	}
 
 	public String getOrigen() {
@@ -141,7 +147,27 @@ public class CarreraService {
 	private boolean conductorIsOcupado(int conductor) {
 		return poolConductores.findOne(conductor).isOcupado();
 	}
-	
-	
-	
+
+	public ValoracionRepository getValoraciones() {
+		return valoraciones;
+	}
+
+	public ConductorRepository getConductores() {
+		return this.poolConductores;
+	}
+
+	public String nm(){
+		String s = "";
+		for (Conductor c : poolConductores.findAll()) {
+			s += c.getNombre() + " ,";
+		}
+		return s;
+	}
+	public double valoracionMedia() {
+		double valoracionMedia = 0.0d;
+		for (Valoracion valoracion : valoraciones.findAllByConductor(this.conductor)) {
+			valoracionMedia += valoracion.getValoracion();
+		}
+		return valoracionMedia;
+	}
 }

@@ -3,9 +3,6 @@ package org.foobarspam.cotxox.domain;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,21 +12,19 @@ public class Conductor {
 	@Id @GeneratedValue
 	private Integer id;
 	
-	@NotEmpty
 	private String nombre;
 	
 	@NotNull
 	private String matricula;
 	
-	@NotEmpty
 	private String modelo;
 	
 	private boolean ocupado = false;
 
 	private double valoracionMedia;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	private List<Double> valoraciones= new ArrayList<>();
+	@OneToMany(fetch = FetchType.EAGER)
+	private List<Valoracion> valoraciones;
 
 	//lo pide JPA
 	public Conductor() {
@@ -39,6 +34,8 @@ public class Conductor {
 		this.nombre = nombre;
 		this.matricula = matricula;
 		this.modelo = modelo;
+		this.valoraciones = new ArrayList<>();
+		this.valoracionMedia = 0.0d;
 	}
 
 	public String getNombre() {
@@ -77,25 +74,13 @@ public class Conductor {
 		return id;
 	}
 
-	public double getValoracionMedia() {
-
-		double valoracion = 0;
-		for (int i = 0; i < valoraciones.size(); i++) {
-			valoracion += valoraciones.get(i);
-		}
-		return valoracion / valoraciones.size();
-
+	public void setValoracion(double valoracion) {
+		this.valoraciones.add(new Valoracion(valoracion, this));
 	}
 
-	public void setValoracionMedia(double valoracionMedia) {
-		this.valoracionMedia = valoracionMedia;
-	}
-
-	public List<Double> getValoraciones() {
+	public List<Valoracion> getValoraciones() {
 		return valoraciones;
 	}
 
-	public void setValoracion(double valoracion) {
-		this.valoraciones.add(valoracion);
-	}
+
 }
