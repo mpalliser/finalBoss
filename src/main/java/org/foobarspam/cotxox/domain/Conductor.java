@@ -35,7 +35,6 @@ public class Conductor {
 		this.matricula = matricula;
 		this.modelo = modelo;
 		this.valoraciones = new ArrayList<>();
-		this.valoracionMedia = 0.0d;
 	}
 
 	public String getNombre() {

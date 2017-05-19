@@ -39,13 +39,6 @@ public class DemoApplicationTests {
 		carrera.setDistancia(7.75);
 		carrera.setTiempoEsperadoMinutos(10);
 
-
-		//definimos una valoracion por defecto para cada conductor
-		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(1)));
-		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(2)));
-		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(3)));
-
-
 	}
 	@Test
 	public void inicializarServicios() {
@@ -80,6 +73,7 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testAsignarConductor() {
+
 		//Creamos 3 conductores
 		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
 		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
@@ -92,12 +86,18 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testValoraciones() {
+
+		//TODO: peta al realizar la media de valoraciones de mas de un conductor.
+		//Añadimos valoraciones
 		carrera.getValoraciones().save(new Valoracion(4.00,carrera.getConductores().findOne(1)));
 		carrera.getValoraciones().save(new Valoracion(5.00,carrera.getConductores().findOne(1)));
 		carrera.getValoraciones().save(new Valoracion(4.50,carrera.getConductores().findOne(1)));
 
-		assertEquals(3, carrera.getValoraciones().count());
-		assertEquals(4.50, carrera.valoracionMedia(), 0);
+		carrera.getValoraciones().save(new Valoracion(4.00,carrera.getConductores().findOne(2)));
+		carrera.getValoraciones().save(new Valoracion(3.00,carrera.getConductores().findOne(2)));
+
+
+		assertEquals(carrera.valoracionMedia(carrera.getConductores().findOne(2)), 3.50, 0);
 
 	}
 }

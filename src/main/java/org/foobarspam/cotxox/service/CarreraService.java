@@ -134,12 +134,13 @@ public class CarreraService {
 		return this.poolConductores;
 	}
 
-	//TODO: metodo que deberia estar en conductor o tener relacion a conductor.
-	public double valoracionMedia() {
-		double valoracionMedia = 0.0d;
-		for (Valoracion valoracion : valoraciones.findAllByConductor(this.conductor)) {
+	//TODO: rehacer metodo, no funciona
+	public double valoracionMedia(Conductor c) {
+		double valoracionMedia = valoraciones.findFirstByConductor(c).getValoracion();
+		for (Valoracion valoracion : valoraciones.findAllByConductor_Id(c.getId())) {
 			valoracionMedia += valoracion.getValoracion();
 		}
-		return valoracionMedia / valoraciones.count();
+		valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
+		return valoracionMedia / valoraciones.findAllByConductor_Id(c.getId()).size();
 	}
 }
