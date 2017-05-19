@@ -21,7 +21,7 @@ public class Conductor {
 	
 	private boolean ocupado = false;
 
-	private double valoracionMedia;
+	private double valoracionMedia = 0.0d;
 
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Valoracion> valoraciones;
@@ -81,5 +81,12 @@ public class Conductor {
 		return valoraciones;
 	}
 
-
+	//TODO: null pointer
+	public double valoracionMedia() {
+		for (Valoracion valoracion : valoraciones) {
+			valoracionMedia += valoracion.getValoracion();
+		}
+		//valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
+		return valoracionMedia / valoraciones.size();
+	}
 }

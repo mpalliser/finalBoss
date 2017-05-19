@@ -79,6 +79,7 @@ public class DemoApplicationTests {
 		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
 		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
+
 		assertTrue(carrera.getConductores().exists(carrera.asignarConductor().getId()));
 		//assertEquals("Mola", carrera.asignarConductor().getNombre());
 
@@ -89,15 +90,10 @@ public class DemoApplicationTests {
 
 		//TODO: peta al realizar la media de valoraciones de mas de un conductor.
 		//Añadimos valoraciones
-		carrera.getValoraciones().save(new Valoracion(4.00,carrera.getConductores().findOne(1)));
-		carrera.getValoraciones().save(new Valoracion(5.00,carrera.getConductores().findOne(1)));
-		carrera.getValoraciones().save(new Valoracion(4.50,carrera.getConductores().findOne(1)));
+		carrera.mockAsignarConductor();
+		carrera.setValoracion(4);
 
-		carrera.getValoraciones().save(new Valoracion(4.00,carrera.getConductores().findOne(2)));
-		carrera.getValoraciones().save(new Valoracion(3.00,carrera.getConductores().findOne(2)));
-
-
-		assertEquals(carrera.valoracionMedia(carrera.getConductores().findOne(2)), 3.50, 0);
+		assertEquals(carrera.getConductor().valoracionMedia(), 4.00, 0);
 
 	}
 }

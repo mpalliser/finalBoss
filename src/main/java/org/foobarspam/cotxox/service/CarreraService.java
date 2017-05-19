@@ -22,8 +22,12 @@ public class CarreraService {
 	private double distancia;
 	private int tiempoEsperadoMinutos;
 	private String tarjetaCredito;
+
 	private TarifaService tarifa;
+
 	private Conductor conductor;
+
+	private double valoracion;
 	private double costeTotal;
 	private int totalPropinas;
 
@@ -35,6 +39,14 @@ public class CarreraService {
 	public CarreraService(ConductorRepository poolConductores, ValoracionRepository valoraciones) {
 		this.poolConductores = poolConductores;
 		this.valoraciones = valoraciones;
+	}
+
+	public double getValoracion() {
+		return valoracion;
+	}
+
+	public void setValoracion(double valoracion) {
+		valoraciones.save(new Valoracion(valoracion, this.conductor));
 	}
 
 	public String getOrigen() {
@@ -119,7 +131,12 @@ public class CarreraService {
 
 	public Conductor asignarConductor() {
 		//TODO: añadir try catch para gestionar si no existen conductores libres
-		return getConductores().findFirstByOcupado(false);
+		 setConductor(getConductores().findFirstByOcupado(false));
+		 return this.conductor;
+	}
+
+	public void mockAsignarConductor(){
+		setConductor(getConductores().findOne(1));
 	}
 
 	private boolean conductorIsOcupado(int conductor) {
@@ -134,13 +151,13 @@ public class CarreraService {
 		return this.poolConductores;
 	}
 
-	//TODO: rehacer metodo, no funciona
-	public double valoracionMedia(Conductor c) {
-		double valoracionMedia = valoraciones.findFirstByConductor(c).getValoracion();
-		for (Valoracion valoracion : valoraciones.findAllByConductor_Id(c.getId())) {
+	//TODO: mover metodo a Conductor sin que pete :D
+	public double valoracionMediaConductor(Conductor c) {
+		double valoracionMedia = 0.0d;
+		for (Valoracion valoracion : valoraciones.findAllByConductor(c)) {
 			valoracionMedia += valoracion.getValoracion();
 		}
-		valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
-		return valoracionMedia / valoraciones.findAllByConductor_Id(c.getId()).size();
+		//valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
+		return valoracionMedia / valoraciones.findAllByConductor(c).size();
 	}
 }

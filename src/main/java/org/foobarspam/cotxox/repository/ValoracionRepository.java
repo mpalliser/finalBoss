@@ -13,7 +13,7 @@ import java.util.List;
 public interface ValoracionRepository extends CrudRepository<Valoracion, Long> {
 
 
-	List<Valoracion> findAllByConductor_Id(Integer id);
+	List<Valoracion> findAllByConductor(Conductor c);
 
 
 	Valoracion findFirstByConductor(Conductor c);
