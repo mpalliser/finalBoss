@@ -8,6 +8,7 @@ import org.foobarspam.cotxox.repository.ValoracionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -117,31 +118,8 @@ public class CarreraService {
 	}
 
 	public Conductor asignarConductor() {
-		Conductor conductorAsignado = null;
-		boolean asignado = false;
-		int posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()+1);
-		if (hayConductoresLibres() == false) {
-			System.out.println("En este momento no queda ningún conductor disponible. Disculpe las molestias ");
-			return conductorAsignado;
-		}
-		while (asignado == false) {
-			if (conductorIsOcupado(posicionConsulta) == false) {
-				conductorAsignado = poolConductores.findOne(posicionConsulta);
-				asignado = true;
-				conductorAsignado.setOcupado(true);
-			}
-			posicionConsulta = ThreadLocalRandom.current().nextInt(1,(int)poolConductores.count()+1);
-		}
-		return conductorAsignado;
-	}
-
-	private boolean hayConductoresLibres() {
-		for (Conductor conductor : poolConductores.findAll()) {
-			if (conductor.isOcupado() == false) {
-				return true;
-			}
-		}
-		return false;
+		//TODO: añadir try catch para gestionar si no existen conductores libres
+		return getConductores().findFirstByOcupado(false);
 	}
 
 	private boolean conductorIsOcupado(int conductor) {
@@ -156,18 +134,12 @@ public class CarreraService {
 		return this.poolConductores;
 	}
 
-	public String nm(){
-		String s = "";
-		for (Conductor c : poolConductores.findAll()) {
-			s += c.getNombre() + " ,";
-		}
-		return s;
-	}
+	//TODO: metodo que deberia estar en conductor o tener relacion a conductor.
 	public double valoracionMedia() {
 		double valoracionMedia = 0.0d;
 		for (Valoracion valoracion : valoraciones.findAllByConductor(this.conductor)) {
 			valoracionMedia += valoracion.getValoracion();
 		}
-		return valoracionMedia;
+		return valoracionMedia / valoraciones.count();
 	}
 }

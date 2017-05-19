@@ -1,11 +1,11 @@
 ----------------------------------------------------------------
-Fri May 19 00:37:14 CEST 2017:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-015c-1db5-372b-00000865a878 
-on database directory memory:C:\Users\palliser\Desktop\code\finalBoss\testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
-Loaded from file:/C:/Users/palliser/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
+Fri May 19 11:11:04 CEST 2017:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.13.1.1 - (1765088): instance a816c00e-015c-1ff9-7f7d-000003023d78 
+on database directory memory:C:\Users\mariano.palliser\Desktop\finalBoss\testdb with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
+Loaded from file:/C:/Users/mariano.palliser/.m2/repository/org/apache/derby/derby/10.13.1.1/derby-10.13.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_131-b11
-user.dir=C:\Users\palliser\Desktop\code\finalBoss
+java.runtime.version=1.8.0_121-b13
+user.dir=C:\Users\mariano.palliser\Desktop\finalBoss
 os.name=Windows 10
 os.arch=amd64
 os.version=10.0

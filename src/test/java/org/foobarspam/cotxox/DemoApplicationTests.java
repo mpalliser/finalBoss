@@ -7,6 +7,7 @@ import org.foobarspam.cotxox.domain.Valoracion;
 import org.foobarspam.cotxox.service.CarreraService;
 import org.foobarspam.cotxox.service.TarifaService;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ public class DemoApplicationTests {
 	@Autowired
 	TarifaService tarifa;
 
+
+	//TODO: recordar que Before se ejecuta antes de cada caso test
 	@Before
 	public void setUp(){
 
@@ -36,18 +39,12 @@ public class DemoApplicationTests {
 		carrera.setDistancia(7.75);
 		carrera.setTiempoEsperadoMinutos(10);
 
-		//Creamos 3 conductores con diferentes valoraciones para testear
-		Conductor cd = new Conductor("Samantha", "4ABC123", "Chevy Malibu");
-		carrera.getConductores().save(cd);
-		carrera.getValoraciones().save(new Valoracion(4,cd));
 
-		cd = new Conductor("Fox", "SDHJ44", "Toyota Prius");
-		carrera.getConductores().save(cd);
-		carrera.getValoraciones().save(new Valoracion(4,cd));
+		//definimos una valoracion por defecto para cada conductor
+		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(1)));
+		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(2)));
+		//carrera.getValoraciones().save(new Valoracion(4,carrera.getConductores().findOne(3)));
 
-		cd = new Conductor("Mola", "7JKK555", "Mercedes A");
-		carrera.getConductores().save(cd);
-		carrera.getValoraciones().save(new Valoracion(4,cd));
 
 	}
 	@Test
@@ -65,11 +62,14 @@ public class DemoApplicationTests {
 
 		//See your Cost
 		assertEquals(13.9625, carrera.getCosteEsperado(), 0);
-		assertEquals("",carrera.nm());
 	}
 
 	@Test
 	public void testPool() {
+		//Creamos 3 conductores
+		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
+		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
+		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
 		assertEquals("Samantha", carrera.getConductores().findOne(1).getNombre());
 		//Crea 6 conductores por los loles
@@ -80,6 +80,10 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testAsignarConductor() {
+		//Creamos 3 conductores
+		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
+		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
+		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
 		assertTrue(carrera.getConductores().exists(carrera.asignarConductor().getId()));
 		//assertEquals("Mola", carrera.asignarConductor().getNombre());
@@ -88,8 +92,12 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testValoraciones() {
+		carrera.getValoraciones().save(new Valoracion(4.00,carrera.getConductores().findOne(1)));
+		carrera.getValoraciones().save(new Valoracion(5.00,carrera.getConductores().findOne(1)));
+		carrera.getValoraciones().save(new Valoracion(4.50,carrera.getConductores().findOne(1)));
+
 		assertEquals(3, carrera.getValoraciones().count());
-		//assertEquals(4.50, carrera.valoracionMedia(), 0);
+		assertEquals(4.50, carrera.valoracionMedia(), 0);
 
 	}
 }
