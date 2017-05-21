@@ -1,14 +1,13 @@
 package org.foobarspam.cotxox.domain;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.io.Serializable;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 /**
  * Created by palliser on 18/05/2017.
  */
-@Entity
+@Entity  
 public class Valoracion {
 
 	@Id @GeneratedValue

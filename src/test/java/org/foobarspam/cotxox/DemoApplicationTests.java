@@ -92,7 +92,8 @@ public class DemoApplicationTests {
 		//Añadimos valoraciones
 		carrera.mockAsignarConductor();
 		carrera.setValoracion(4);
-
+		assertEquals(carrera.getConductor().valoracionMedia(), 4, 0);
+		assertEquals(carrera.getConductor(), carrera.getConductores().findOne(1));
 		assertEquals(carrera.getConductor().valoracionMedia(), 4.00, 0);
 
 	}
