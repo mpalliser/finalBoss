@@ -28,10 +28,6 @@ public class DemoApplicationTests {
 	@Before
 	public void setUp(){
 
-		// fijamos los parametros de tarifa
-		tarifa.setDistancia(7.75);
-		tarifa.setMinutos(10);
-
 		//fijamos los parametros de carrera
 		carrera.setTarjetaCredito("4916119711304546");
 		carrera.setOrigen("Aeroport Son Sant Joan");
@@ -48,6 +44,7 @@ public class DemoApplicationTests {
 		assertEquals(carrera.getOrigen(), "Aeroport Son Sant Joan");
 		assertEquals(carrera.getDestino(), "Magaluf");
 		assertEquals(carrera.getDistancia(), 7.75, 0);
+
 	}
 
 	@Test
@@ -55,6 +52,10 @@ public class DemoApplicationTests {
 
 		//See your Cost
 		assertEquals(13.9625, carrera.getCosteEsperado(), 0);
+
+		carrera.setDistancia(5.00);
+		carrera.setTiempoEsperadoMinutos(5);
+		assertEquals( 8.5, carrera.getCosteEsperado(), 0 );
 	}
 
 	@Test
@@ -88,13 +89,25 @@ public class DemoApplicationTests {
 	@Test
 	public void testValoraciones() {
 
-		//TODO: peta al realizar la media de valoraciones de mas de un conductor.
-		//Añadimos valoraciones
-		carrera.mockAsignarConductor();
-		carrera.setValoracion(4);
-		assertEquals(carrera.getConductor().valoracionMedia(), 4, 0);
-		assertEquals(carrera.getConductor(), carrera.getConductores().findOne(1));
-		assertEquals(carrera.getConductor().valoracionMedia(), 4.00, 0);
+		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
+		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
+		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
+		//TODO: no es posible acceder a valoraciones desde conductor
+		//Añadimos valoraciones
+		carrera.setConductor(carrera.getConductores().findOne(1));
+		carrera.setValoracion(5);
+		carrera.setValoracion(3);
+		carrera.setValoracion(4);
+
+		//TODO: equals peta al comprobar el mismo conductor de la bbdd y desde la carrera.
+		//no peta al comprobar sus propiedades :s
+		assertEquals(carrera.getConductor().getId(), carrera.getConductores().findOne(1).getId());
+		assertEquals(3,carrera.getConductores().count());
+
+		assertEquals(5, carrera.getValoraciones().findFirstByConductor(carrera.getConductor()).getValoracion(), 0);
+		assertEquals(3, carrera.getValoraciones().findAllByConductor(carrera.getConductor()).size());
+		assertEquals(carrera.valoracionMediaConductor(), 4.00, 0);
 	}
+
 }

@@ -21,12 +21,10 @@ public class Conductor {
 	
 	private boolean ocupado = false;
 
-	private double valoracionMedia = 0.0d;
-
 	@OneToMany(fetch = FetchType.EAGER)
 	private List<Valoracion> valoraciones;
 
-	//lo pide JPA
+	//necesario JPA
 	public Conductor() {
 	}
 
@@ -40,53 +38,13 @@ public class Conductor {
 	public String getNombre() {
 		return nombre;
 	}
-	
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-	
-	public String getMatricula() {
-		return matricula;
-	}
-	
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
-	}
-	
-	public String getModelo() {
-		return modelo;
-	}
-	
-	public void setModelo(String modelo) {
-		this.modelo = modelo;
-	}
 
 	public boolean isOcupado() {
 		return ocupado;
-	}
-	
-	public void setOcupado(boolean ocupado) {
-		this.ocupado = ocupado;
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public void setValoracion(double valoracion) {
-		this.valoraciones.add(new Valoracion(valoracion, this));
-	}
-
-	public List<Valoracion> getValoraciones() {
-		return valoraciones;
-	}
-
-	//TODO: null pointer
-	public double valoracionMedia() {
-		for (Valoracion valoracion : valoraciones) {
-			valoracionMedia += valoracion.getValoracion();
-		}
-		//valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
-		return valoracionMedia / valoraciones.size();
-	}
 }

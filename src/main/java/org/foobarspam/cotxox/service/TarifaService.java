@@ -11,8 +11,8 @@ public class TarifaService {
 	private double 	COSTEMINIMO = 5.00;
 	private double distancia;
 	private double minutos;
-	
-	
+	private double costeTotal;
+
 	public TarifaService() {
 	}
 
@@ -33,11 +33,18 @@ public class TarifaService {
 	}
 	
 	public double getCosteTotalEsperado(){
-		double costeTotal = getCosteDistancia(distancia) + getCosteTiempo(minutos);
+		costeTotal = getCosteDistancia(distancia) + getCosteTiempo(minutos);
 		if (costeTotal > COSTEMINIMO){
 			return costeTotal;
 		}
 		return COSTEMINIMO;
 	}
-	
+
+	public double getDistancia() {
+		return this.distancia;
+	}
+
+	public double getMinutos() {
+		return this.minutos;
+	}
 }

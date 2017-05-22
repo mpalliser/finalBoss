@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ConductorRepository extends CrudRepository<Conductor, Integer>{
 
-
 	Conductor findFirstByOcupado(Boolean f);
+
 }

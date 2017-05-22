@@ -19,18 +19,13 @@ public class CarreraService {
 
 	private String origen;
 	private String destino;
-	private double distancia;
-	private int tiempoEsperadoMinutos;
 	private String tarjetaCredito;
 
 	private TarifaService tarifa;
 
 	private Conductor conductor;
 
-	private double valoracion;
 	private double costeTotal;
-	private int totalPropinas;
-
 	
 	public CarreraService() {
 	}
@@ -39,10 +34,6 @@ public class CarreraService {
 	public CarreraService(ConductorRepository poolConductores, ValoracionRepository valoraciones) {
 		this.poolConductores = poolConductores;
 		this.valoraciones = valoraciones;
-	}
-
-	public double getValoracion() {
-		return valoracion;
 	}
 
 	public void setValoracion(double valoracion) {
@@ -65,20 +56,18 @@ public class CarreraService {
 		this.destino = destino;
 	}
 
+	//TODO: carrera depende de tarifa para calcular el precio de la carrera.
+	// eliminados distancia/minutos de carrera, parametros duplicados.
 	public double getDistancia() {
-		return distancia;
+		return tarifa.getDistancia();
 	}
 
 	public void setDistancia(double distancia) {
-		this.distancia = distancia;
-	}
-
-	public int getTiempoEsperadoMinutos() {
-		return tiempoEsperadoMinutos;
+		tarifa.setDistancia(distancia);
 	}
 
 	public void setTiempoEsperadoMinutos(int tiempoEsperadoMinutos) {
-		this.tiempoEsperadoMinutos = tiempoEsperadoMinutos;
+		this.tarifa.setMinutos(tiempoEsperadoMinutos);
 	}
 
 	public String getTarjetaCredito() {
@@ -87,11 +76,6 @@ public class CarreraService {
 
 	public void setTarjetaCredito(String tarjetaCredito) {
 		this.tarjetaCredito = tarjetaCredito;
-	}
-	
-	
-	public TarifaService getTarifa() {
-		return tarifa;
 	}
 
 	@Autowired
@@ -107,21 +91,6 @@ public class CarreraService {
 		this.conductor = conductor;
 	}
 
-	public double getCosteTotal() {
-		return costeTotal;
-	}
-
-	public void setCosteTotal(double costeTotal) {
-		this.costeTotal = costeTotal;
-	}
-
-	public int getTotalPropinas() {
-		return totalPropinas;
-	}
-
-	public void setTotalPropinas(int totalPropinas) {
-		this.totalPropinas = totalPropinas;
-	}
 	
 	//-----------------------------------------------------------------------------
 	
@@ -133,10 +102,6 @@ public class CarreraService {
 		//TODO: añadir try catch para gestionar si no existen conductores libres
 		 setConductor(getConductores().findFirstByOcupado(false));
 		 return this.conductor;
-	}
-
-	public void mockAsignarConductor(){
-		setConductor(getConductores().findOne(1));
 	}
 
 	private boolean conductorIsOcupado(int conductor) {
@@ -151,13 +116,11 @@ public class CarreraService {
 		return this.poolConductores;
 	}
 
-	//TODO: mover metodo a Conductor sin que pete :D
-	public double valoracionMediaConductor(Conductor c) {
+	public double valoracionMediaConductor() {
 		double valoracionMedia = 0.0d;
-		for (Valoracion valoracion : valoraciones.findAllByConductor(c)) {
+		for (Valoracion valoracion : valoraciones.findAllByConductor(this.conductor)) {
 			valoracionMedia += valoracion.getValoracion();
 		}
-		//valoracionMedia = valoracionMedia - valoraciones.findFirstByConductor(c).getValoracion();
-		return valoracionMedia / valoraciones.findAllByConductor(c).size();
+		return valoracionMedia / valoraciones.findAllByConductor(this.conductor).size();
 	}
 }
