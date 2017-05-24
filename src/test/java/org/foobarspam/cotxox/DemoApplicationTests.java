@@ -3,11 +3,9 @@ package org.foobarspam.cotxox;
 import static org.junit.Assert.*;
 
 import org.foobarspam.cotxox.domain.Conductor;
-import org.foobarspam.cotxox.domain.Valoracion;
 import org.foobarspam.cotxox.service.CarreraService;
 import org.foobarspam.cotxox.service.TarifaService;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,10 +58,6 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testPool() {
-		//Creamos 3 conductores
-		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
-		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
-		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
 		assertEquals("Samantha", carrera.getConductores().findOne(1).getNombre());
 		//Crea 6 conductores por los loles
@@ -75,12 +69,6 @@ public class DemoApplicationTests {
 	@Test
 	public void testAsignarConductor() {
 
-		//Creamos 3 conductores
-		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
-		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
-		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
-
-
 		assertTrue(carrera.getConductores().exists(carrera.asignarConductor().getId()));
 		//assertEquals("Mola", carrera.asignarConductor().getNombre());
 
@@ -88,10 +76,6 @@ public class DemoApplicationTests {
 
 	@Test
 	public void testValoraciones() {
-
-		carrera.getConductores().save(new Conductor("Samantha", "4ABC123", "Chevy Malibu"));
-		carrera.getConductores().save(new Conductor("Fox", "SDHJ44", "Toyota Prius"));
-		carrera.getConductores().save(new Conductor("Mola", "7JKK555", "Mercedes A"));
 
 		//TODO: no es posible acceder a valoraciones desde conductor
 		//Añadimos valoraciones
@@ -105,7 +89,6 @@ public class DemoApplicationTests {
 		assertEquals(carrera.getConductor().getId(), carrera.getConductores().findOne(1).getId());
 		assertEquals(3,carrera.getConductores().count());
 
-		assertEquals(5, carrera.getValoraciones().findFirstByConductor(carrera.getConductor()).getValoracion(), 0);
 		assertEquals(3, carrera.getValoraciones().findAllByConductor(carrera.getConductor()).size());
 		assertEquals(carrera.valoracionMediaConductor(), 4.00, 0);
 	}

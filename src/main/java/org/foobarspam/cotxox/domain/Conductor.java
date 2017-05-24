@@ -21,7 +21,7 @@ public class Conductor {
 	
 	private boolean ocupado = false;
 
-	@OneToMany(fetch = FetchType.EAGER)
+	@OneToMany
 	private List<Valoracion> valoraciones;
 
 	//necesario JPA

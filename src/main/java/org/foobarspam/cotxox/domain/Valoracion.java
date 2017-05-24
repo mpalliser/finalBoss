@@ -15,7 +15,7 @@ public class Valoracion {
 
 	private double valoracion;
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne
 	private Conductor conductor;
 
 	//necesario JPA
